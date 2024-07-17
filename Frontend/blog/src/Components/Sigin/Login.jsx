@@ -3,21 +3,21 @@ import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Label,TextInput,Button,Alert,Spinner} from 'flowbite-react'
 import { Link } from 'react-router-dom'
-const Signin = () => {
-  const navigate=useNavigate();
+const Login = () => {
+    const navigate=useNavigate();
 const [formdata,setFormdata]=useState({});
 const [error,setError]=useState(null);
 const [loading,setLoading]=useState(false);
 const handlesubmit=async(e)=>{
   e.preventDefault();
-  if(!formdata.username || !formdata.email || !formdata.password){
+  if( !formdata.email || !formdata.password){
     setError("all fields are required")
   }
   else{
  try{
   setLoading(true);
   setError(null);
-    const response= await fetch('http://localhost:5000/auth/signup',{
+    const response= await fetch('http://localhost:5000/auth/login',{
       method:'POST',
       headers:{
         'Content-Type':'application/json'
@@ -29,7 +29,7 @@ const handlesubmit=async(e)=>{
     if(!data.ok){
       setError(data.message);
     }
-    navigate('/login')
+    navigate('/')
   setLoading(false);
  }
  catch(error){
@@ -57,11 +57,6 @@ const handlechange=async(e)=>{
         <form className='flex flex-col gap-4' onSubmit={(event)=>{handlesubmit(event)}} >
             <div className=''>
                 
-              <Label  value='Username' />  
-              <TextInput type='text' id='username' placeholder='username' onChange={(event)=>{handlechange(event)}} />
-            </div>
-            <div className=''>
-                
                 <Label  value='Email' />  
                 <TextInput type='email' id='email' placeholder='email' onChange={(event)=>{handlechange(event)}}/>
               </div>
@@ -77,14 +72,14 @@ const handlechange=async(e)=>{
                   <span>Loading...</span>
                  </>
               ):(
-                  'Sign up'
+                  'Login'
                 )}
               </Button>
         </form>
         <div className='flex gap-2 text-sm mt-5'>
-            <span>Have an account?</span>
-            <Link to='/login' className='text-blue-500'>
-            Login</Link>
+            <span>Dont Have an account?</span>
+            <Link to='/signin' className='text-blue-500' >
+            Sign Up</Link>
 
         </div>
         {error && (
@@ -99,4 +94,4 @@ const handlechange=async(e)=>{
   )
 }
 
-export default Signin
+export default Login
