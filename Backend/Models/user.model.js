@@ -20,6 +20,10 @@ const userSchema= mongoose.Schema({
         required:true,
        
     },
+    profilepicture:{
+        type:String,
+        required:true
+    }
 },{timeStamps:true});
 const User=mongoose.model('User',userSchema);
 module.exports=User;

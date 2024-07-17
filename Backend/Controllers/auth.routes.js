@@ -11,6 +11,7 @@ const user=new User({
     username,
     email,
     password,
+    profilepicture:"https://imgs.search.brave.com/pO94k9yZcsDjlwLJtAyBbvvI2M4ugV_Zx7fWwVg_he8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA1Lzc2LzY5LzY3/LzM2MF9GXzU3NjY5/Njc1MV9zb2NXTXRl/aEVXcDRTeXZEbEp0/c3RJQWtCYWtrR1RW/ay5qcGc"
 
 });
 try{
