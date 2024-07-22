@@ -2,13 +2,14 @@ import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { useState,useRef } from "react"
 import { useNavigate } from 'react-router-dom'
-
-import { updateStart,updateSuccess,updateFailure } from "../../Redux/userSlice"
-import { TextInput,Button,Spinner,Alert } from "flowbite-react"
+import {HiOutlineExclamationCircle} from 'react-icons/hi'
+import { updateStart,updateSuccess,updateFailure,deleteusersuccess } from "../../Redux/userSlice"
+import { TextInput,Button,Spinner,Alert,Modal } from "flowbite-react"
 const Profile = () => {
     const navigate=useNavigate();
     const dispatch= useDispatch();
     const {loading,error,currentUser}=useSelector(state=>state.user)
+    const [showModal, setShowModal] = useState(false);
 
     const [image,setImage]=useState(null)
     const [imageurl,setImageurl]=useState(null);
@@ -21,6 +22,9 @@ const Profile = () => {
     const handleform=(e)=>{
         setFormdata({...formdata,[e.target.id]:e.target.value})
     }
+    const signOut=async()=>{
+
+    }
     const handleImage=(e)=>{
         
         const file=e.target.files[0]
@@ -29,6 +33,22 @@ const Profile = () => {
         setFilename(file.name)
         setImageurl(URL.createObjectURL(file));
     }}
+    const deleteuser=async(req,res)=>{
+        setShowModal(false)
+        try{
+            const response=await fetch(`http://localhost:5000/user/delete/${currentUser._id}`,{
+                method:'DELETE',
+credentials:"include"
+            })
+            
+            if(response.ok){
+                dispatch(deleteusersuccess())
+                navigate('/')
+            }
+        }catch(error){
+
+        }
+    }
     const handleSubmit=async(e)=>{
         e.preventDefault();
        
@@ -66,7 +86,7 @@ const Profile = () => {
     }
   return (
 <>
-<div className="max-w-lg mx-auto p-3 w-full">
+<div className="max-w-lg mx-auto p-3 w-full ">
     <h1 className="my-7 text-center font-semibold text-[30px]" >Profile</h1>
     <form className="flex flex-col gap-3" onSubmit={(event)=>{handleSubmit(event)}}>
         <input type="file" className="hidden" onChange={(event)=>handleImage(event)} ref={imageref} />
@@ -86,16 +106,35 @@ const Profile = () => {
                 )}
 </Button>
     </form>
+    <div className="text-red-500 flex justify-between">
+        <span  className="cursor-pointer" onClick={()=>setShowModal(true)} >Delete Account</span>
+        <span className="cursor-pointer">Sign Out</span>
+    </div>
+</div>
     {error && (
           <Alert className='mt-5' color='failure'>
             {error}
           </Alert>  
         )}
-    <div className="text-red-500 flex justify-between">
-        <span  className="cursor-pointer">Delete Account</span>
-        <span className="cursor-pointer">Sign Out</span>
-    </div>
+           
+<Modal show={showModal} onClose={()=>setShowModal(false)} popup size='md'>
+<Modal.Header />
+<Modal.Body>
+    <div className="text-center">
+<HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+<h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+Are you sure you want to delete your account?
+</h3>
+<div className="flex justify-center gap-4">
+    <Button color='failure' onClick={deleteuser}>
+        Yes, I'm sure
+    </Button>
+    <Button color="gray" onClick={()=>{setShowModal(false)}}>Cancel</Button>
 </div>
+    </div>
+</Modal.Body>
+        </Modal>
+    
 </>
 )
 }

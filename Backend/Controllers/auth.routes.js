@@ -44,7 +44,7 @@ router.post('/login',async(req,res)=>{
     const token= jwt.sign({id:user._id},process.env.JWT_SECRET)
     const {password:pass,...rest}=user._doc;
     console.log(rest);
-    return res.status(200).cookie('access-token',token,{
+    return res.status(200).cookie('accesstoken',token,{
         httpOnly:true
     }).json(rest)
 })
