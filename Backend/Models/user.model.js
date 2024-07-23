@@ -23,6 +23,10 @@ const userSchema= mongoose.Schema({
     profilepicture:{
         type:String,
         required:true
+    },
+    isAdmin:{
+        type:Boolean,
+        default:false
     }
 },{timeStamps:true});
 const User=mongoose.model('User',userSchema);

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { useState,useRef } from "react"
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 import { updateStart,updateSuccess,updateFailure,deleteusersuccess } from "../../Redux/userSlice"
 import { TextInput,Button,Spinner,Alert,Modal } from "flowbite-react"
@@ -106,6 +106,14 @@ credentials:"include"
                 )}
 </Button>
     </form>
+    {currentUser.isAdmin && (
+<Link to="/create-post">
+
+    <Button gradientDuoTone="purpleToBlue" className="w-full mt-2">
+        Create a post
+    </Button>
+</Link>
+    )}
     <div className="text-red-500 flex justify-between">
         <span  className="cursor-pointer" onClick={()=>setShowModal(true)} >Delete Account</span>
         <span className="cursor-pointer">Sign Out</span>

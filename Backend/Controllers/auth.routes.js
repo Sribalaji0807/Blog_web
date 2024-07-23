@@ -41,7 +41,7 @@ router.post('/login',async(req,res)=>{
     if(user.password!==password){
         return res.status(422).json({message:"Invalid Email or Password"});
     }
-    const token= jwt.sign({id:user._id},process.env.JWT_SECRET)
+    const token= jwt.sign({id:user._id,isAdmin:user.isAdmin},process.env.JWT_SECRET)
     const {password:pass,...rest}=user._doc;
     console.log(rest);
     return res.status(200).cookie('accesstoken',token,{
