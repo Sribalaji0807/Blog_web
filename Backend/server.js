@@ -10,6 +10,7 @@ const imagekit=require('./Models/Imagekit')
 const authRouter=require('./Controllers/auth.routes')
 const verifytoken=require('./verifytoken')
 const deleteuser=require('./Controllers/user.controller')
+const posthandling=require('./Controllers/post.controller')
 const port=process.env.PORT || 3000;
 const storage=multer.memoryStorage();
 const upload=multer({storage:storage});
@@ -21,7 +22,7 @@ app.use(cors({
     credentials: true,
 }));app.use('/auth',authRouter)
 app.use('/user',verifytoken,deleteuser);
-
+app.use('/post',verifytoken,posthandling)
 app.post('/upload',upload.single('profilepicture'),async(req,res)=>{
     const {username,email,id}=req.body;
     const file = req.file;
