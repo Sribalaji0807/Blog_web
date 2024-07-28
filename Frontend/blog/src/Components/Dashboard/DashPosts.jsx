@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { Table } from 'flowbite-react'
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 import { Modal,Button } from 'flowbite-react';
 const DashPosts = () => {
@@ -84,7 +85,9 @@ setShowModal(false);
         }} className='font-medium text-red-500 hover:underline cursor-pointer'>Delete</span>
       </Table.Cell>
       <Table.Cell>
+        <Link to={`/update-post/${data._id}`} >
         <span className='font-medium text-teal-500 hover:underline cursor-pointer'>Edit</span>
+        </Link>
       </Table.Cell>
       
       </Table.Row>

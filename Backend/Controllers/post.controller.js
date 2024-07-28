@@ -2,16 +2,19 @@ const express=require('express');
 const Post=require('../Models/post.model')
 const imagekit=require('../Models/Imagekit')
 const multer =require('multer')
+const router=express.Router();
 const storage=multer.memoryStorage();
 const upload=multer({storage:storage});
-const router=express.Router();
-router.post('/createapost',upload.single('postimage'),async(req,res,next)=>{
-    if(!req.user.isAdmin){
-        return res.status(401).json({message:"Unauthorized"})
+
+    router.post('/createapost',upload.single('postimage'),async(req,res,next)=>{
+        if(!req.user.isAdmin){
+            return res.status(401).json({message:"Unauthorized"})
     }
     try{
         const file = req.file;
         var url=undefined;
+        var fileid=undefined;
+
         if(file!=null){
         const fileBuffer = file.buffer;
     console.log(fileBuffer);
@@ -27,9 +30,12 @@ const fileupload= await new Promise((resolve,reject)=>{
  (error, result) => {
     console.log(result)
     if (error) reject(error);
-    else resolve(result.url);
+    else resolve({url:result.url,
+        fileId:result.fileId
+    });
 });})
-url=fileupload
+url=fileupload.url;
+fileid=fileupload.fileId;
 console.log(url)
 }
 const {title,category,postimage,content}=req.body;
@@ -44,6 +50,7 @@ const slug=req.body.title.split(" ").join('-').toLowerCase().replace(/[^a-zA-Z0-
          content:content,
          category:category,
          postimage:url,
+         imagefieldid:fileid,
             slug:slug
         })
         await post.save()
@@ -58,7 +65,7 @@ router.get('/gettheposts',async(req,res)=>{
         const startindex=parseInt(req.query.startindex)||0;
         const limit=parseInt(req.query.limit)||10;
         const sortdirection=req.query.order === 'asc' ?1:-1;
-        console.log(req.query.userId)
+        console.log(req.query.postId)
         const posts=await Post.find({
             ...(req.query.userId && {userId:req.query.userId}),
             ...(req.query.category && {category:req.query.category}),
@@ -75,7 +82,7 @@ router.get('/gettheposts',async(req,res)=>{
         }).sort({updatedAt:sortdirection})
         .skip(startindex)
         .limit(limit)
-    //    console.log(posts);
+      console.log(posts);
 const totalPosts=await Post.countDocuments();
 const now=new Date();
 const oneMonthAgo=new Date(
@@ -111,6 +118,62 @@ router.delete('/deletethepost',async(req,res)=>{
     }
     catch(error){
       return res.status(500).json({'message':error.message})
+    }
+})
+const conditionmulter=(req,res,next)=>{
+    console.log(req.body);
+    if(req.body.imageupload== true){
+        console.log('imageupload start')
+        upload.single('postimage')(req,res,next);
+    }else{
+        next();
+    }
+}
+router.put('/updatepost',upload.single('postimage'),async(req,res)=>{
+    try{
+     let url=undefined;
+     console.log('start',req.file);
+        if(req.file && req.body.imageupload){
+           
+            const fileBuffer = req.file.buffer;
+         
+            console.log("st")
+
+            console.log(req.body);
+            const fileName = req.body.fileName;
+            await imagekit.deleteFile(req.body.fieldId);
+        const fileupload= await new Promise((resolve,reject)=>{
+            imagekit.upload({
+            file:fileBuffer,
+            fileName:fileName,
+            folder:'/blog_post_image'
+        },
+         (error, result) => {
+            console.log(result)
+            if (error) reject(error);
+            else resolve(result.url);
+        });})
+        url=fileupload
+        console.log(url)
+        }
+        else{
+            url=req.body.postimage;
+        }
+        const { postId, title, content, category } = req.body;
+        console.log("----"+title,content,postId)
+   const post=await Post.findByIdAndUpdate(postId,{
+    $set:{
+        title:title,
+         content:content,
+         category:category,
+         postimage:url,
+        }})
+        await post.save()
+        console.log("success");
+        res.status(201).json({messages:"savedpost"});
+    }catch(error){console.log(error.message)
+
+        return res.status(500).json({messages:error.message})
     }
 })
 
