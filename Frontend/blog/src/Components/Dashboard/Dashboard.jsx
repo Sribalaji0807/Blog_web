@@ -3,6 +3,7 @@ import { useState,useEffect } from "react";
 import Profile from "./Profile";
 import DashSidebar from "./DashSidebar";
 import DashPosts  from "./DashPosts";
+import Dashusers from './Dashusers'
 const Dashboard = () => {
     const location=useLocation();
     const [tab,setTab]=useState('');
@@ -20,6 +21,7 @@ const Dashboard = () => {
     <div className="w-full">
         {tab === 'profile' && <Profile/>}
         {tab==='posts' && <DashPosts/>}
+        {tab==='users' && <Dashusers/>}
     </div>
      </div>
   )
