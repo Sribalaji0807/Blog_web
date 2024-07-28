@@ -1,10 +1,12 @@
 import { Sidebar } from "flowbite-react"
-import {HiUser,HiArrowSmRight} from 'react-icons/hi'
+import {HiUser,HiArrowSmRight, HiDocument, HiDocumentText} from 'react-icons/hi'
 import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import {useSelector} from 'react-redux'
 const DashSidebar = () => {
     const location=useLocation();
+    const {currentUser}=useSelector((state)=>state.user)
     const [tab,setTab]=useState('');
     useEffect(()=>{
         const urlparams=new URLSearchParams(location.search)
@@ -18,10 +20,18 @@ const DashSidebar = () => {
         <Sidebar.Items>
             <Sidebar.ItemGroup>
                 <Link to='/dashboard?tab=profile'>
-               <Sidebar.Item active={tab === 'profile'} icon={HiUser} label={'User'} labelColor='dark' as={"div"} >
+               <Sidebar.Item active={tab === 'profile'} icon={HiUser} label={currentUser.isAdmin?"Admin":"user"} labelColor='dark' as={"div"} >
                 Profile
                 </Sidebar.Item>
                 </Link>
+                {currentUser.isAdmin && (
+
+                <Link to='/dashboard?tab=posts'>
+                <Sidebar.Item active={tab==='posts'} icon={HiDocumentText} as={"div"}>
+Posts
+                </Sidebar.Item>
+                </Link>
+                )}
                 <Sidebar.Item active icon={HiArrowSmRight} className="cursor-pointer" >
                Sign Out
                 </Sidebar.Item> 

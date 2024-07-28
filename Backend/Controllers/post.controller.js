@@ -58,6 +58,7 @@ router.get('/gettheposts',async(req,res)=>{
         const startindex=parseInt(req.query.startindex)||0;
         const limit=parseInt(req.query.limit)||10;
         const sortdirection=req.query.order === 'asc' ?1:-1;
+        console.log(req.query.userId)
         const posts=await Post.find({
             ...(req.query.userId && {userId:req.query.userId}),
             ...(req.query.category && {category:req.query.category}),
@@ -74,25 +75,42 @@ router.get('/gettheposts',async(req,res)=>{
         }).sort({updatedAt:sortdirection})
         .skip(startindex)
         .limit(limit)
+    //    console.log(posts);
 const totalPosts=await Post.countDocuments();
 const now=new Date();
-const oneMonthAgo=new DataTransfer(
+const oneMonthAgo=new Date(
     now.getFullYear(),
     now.getMonth()-1,
     now.getDate()
 )
+console.log("hi")
 const lastMonthPosts= await Post.countDocuments({
     updatedAt:{$gte:oneMonthAgo}
 })
 
-        res.status(200).json({
+    return res.status(200).json({
             posts,
             totalPosts,
             lastMonthPosts
         })
     }
     catch(error){
-
+        console.log("ssss")
+console.log(error.messages)
+return res.status(500).json({message:error.messages})
+    }
+})
+router.delete('/deletethepost',async(req,res)=>{
+    try{
+      //  console.log(req.query.userId,req.user._id);
+    if(req.query.userId != req.user.id || !req.user.isAdmin){
+            return res.status(403).json({message:"Forbidden access"})
+        }
+    const post=await Post.deleteOne({_id:req.query.postId})
+    return res.status(200).json({message:'deletion successfully'})
+    }
+    catch(error){
+      return res.status(500).json({'message':error.message})
     }
 })
 
