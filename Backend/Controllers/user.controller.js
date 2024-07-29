@@ -60,5 +60,16 @@ return res.status(403).json({message:"forbidden access"})
         return res.status(401).json({message:error.message});
     }
 })
+router.get('/commentuser/:userId',async(req,res)=>{
+    try {
+        const userId=req.params.userId;
+        const user=await User.findOne({_id:userId});
+        console.log(user)
+        const {password:pass,...rest}=user._doc
+        res.status(200).json(rest);
+    } catch (error) {
+        return res.status(500).json({message:error.message})
+    }
+})
 module.exports=router;
 

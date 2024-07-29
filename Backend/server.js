@@ -24,7 +24,7 @@ app.use(cors({
 }));app.use('/auth',authRouter)
 app.use('/user',verifytoken,deleteuser);
 app.use('/posts',verifytoken,posthandling)
-app.use('/comment',verifytoken,commenthandler)
+app.use('/comment',commenthandler)
 app.post('/upload',upload.single('profilepicture'),async(req,res)=>{
     const {username,email,id}=req.body;
     const file = req.file;

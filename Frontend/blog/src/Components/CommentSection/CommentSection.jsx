@@ -1,12 +1,25 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import ShowComment from './ShowComment'
 import { Textarea,Button,Alert } from 'flowbite-react'
 export default function CommentSection({postId}) {
     const [comment,setComment]=useState('');
+    const [comments,setComments]=useState([])
   const {currentUser}=useSelector(state =>state.user)
 const [commenterror,setCommenterror]=useState(null)
+  useEffect(()=>{
+      const fetchdata=async()=>{
+        const response=await fetch(`http://localhost:5000/comment/getcomments/${postId}`)
+        const data=await response.json()
+        if(response.ok){
+            setComments(data)
+            console.log(data);
+        }
+      }
+      fetchdata()
+  },[postId])
   const handlesubmit=async(e)=>{
 e.preventDefault();
 try {
@@ -25,6 +38,7 @@ try {
     const data=await response.json()
     if(response.ok){
         setComment(' ');
+        setComments([data,...comments])
         console.log(data);
     }
     else{
@@ -58,6 +72,7 @@ try {
         <Textarea
         placeholder='Add a comment...'
         rows='3'
+        id='content'
         maxLength='200'
         onChange={(event)=>{
             setComment(event.target.value)
@@ -75,6 +90,25 @@ try {
         </Alert>
         }
     </form>
+)}
+
+{comments.length===0 ?(
+   <p className='text-sm my-5'>No comments yet</p>
+):(
+    <>
+    <div className='text-sm flex items-center gap-1 mt-3'>
+    <p>Comments</p>
+    <div className='border border-gray-400 py-1 px-3 rounded-sm'>
+        <p>{comments.length}</p>
+    </div>
+</div>
+<div>
+
+{comments.map((data)=>(
+    <ShowComment key={data._id} comment={data}/>
+))}
+</div>
+</>
 )}
     </div>
   )
