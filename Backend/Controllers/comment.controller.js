@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const Comment=require('../Models/comment.model');
-const verifytoken=require('../verifytoken')
+const verifytoken=require('../verifytoken');
 router.post('/create',verifytoken,async(req,res)=>{
 
    try {
@@ -25,4 +25,30 @@ router.get('/getcomments/:postId',async(req,res)=>{
     const comments=await Comment.find({postId:postId})
     res.status(200).json(comments);
 })
+router.put('/likeComment/:commentId',verifytoken,async(req,res)=>{
+   try {
+    const userId=req.user.id;
+    const commentId=req.params.commentId;
+    const comment=await Comment.findOne({_id:commentId});
+    if(!comment){
+        return res.status(404).json({message:"page not found"})
+    }
+    const userIndex=comment.likes.indexOf(req.user.id);
+    if(userIndex==-1){
+        comment.likes.push(userId);
+        comment.numberOfLikes+=1;
+    }
+    else{
+        comment.numberOfLikes-=1;
+        comment.likes.splice(userIndex,1)
+    }
+    await comment.save()
+    console.log(comment);
+    return res.status(200).json(comment);
+   } catch (error) {
+    return res.status(500).json({message:error.message})
+   }
+
+})
+
 module.exports=router;

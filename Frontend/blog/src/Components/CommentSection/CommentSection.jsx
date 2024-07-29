@@ -3,8 +3,10 @@ import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ShowComment from './ShowComment'
+import { useNavigate } from 'react-router-dom'
 import { Textarea,Button,Alert } from 'flowbite-react'
 export default function CommentSection({postId}) {
+    const navigate=useNavigate();
     const [comment,setComment]=useState('');
     const [comments,setComments]=useState([])
   const {currentUser}=useSelector(state =>state.user)
@@ -49,6 +51,27 @@ try {
     setCommenterror(error.message)
     console.log(error.message)
 }
+  }
+  const handleLike=async(commentId)=>{
+     try {
+        console.log("start")
+        if(!currentUser){
+            navigate('/signin');
+            return
+        }
+        const response=await fetch(`http://localhost:5000/comment/likeComment/${commentId}`,{method:'PUT',credentials:"include"})
+        if(response.ok){
+            const data=await response.json();
+            console.log(data);
+            setComments(comments.map(comment=>comment._id===commentId?{
+                ...comment,
+                likes:data.likes,
+                numberOfLikes:data.numberOfLikes
+            }:comment))
+        }
+     } catch (error) {
+      console.log(error.message)  
+     }
   }
     return (
     <div>
@@ -105,7 +128,7 @@ try {
 <div>
 
 {comments.map((data)=>(
-    <ShowComment key={data._id} comment={data}/>
+    <ShowComment key={data._id} comment={data} onLike={handleLike}/>
 ))}
 </div>
 </>
