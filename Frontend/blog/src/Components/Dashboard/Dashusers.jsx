@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 import { Modal,Button } from 'flowbite-react';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 const Dashusers = () => {
   const {currentUser}=useSelector((state)=>state.user)
   const [showmore,setShowmore]=useState(true)
@@ -27,7 +28,7 @@ fetchdata();}
   const handleDeleteuser=async()=>{
 setShowModal(false);
     try{
-      const res=await fetch(`http://localhost:5000/user/deleteuser?userId=${userId}&AdminId=${currentUser._id}`,{method:'DELETE',credentials:"include"})
+      const res=await fetch(`http://localhost:5000/user/delete/${userId}`,{method:'DELETE',credentials:"include"})
     const data=await res.json()
       if(res.ok){
        setUsers((prev)=>prev.filter((user)=>user._id != userId));
@@ -78,7 +79,13 @@ setShowModal(false);
         <Table.Cell>{new Date(data.createdAt).toLocaleDateString()}</Table.Cell>
       <Table.Cell ><img  src={data.profilepicture} className='w-23 h-10 object-cover ml-4'/></Table.Cell>
       <Table.Cell className='font-semibold text-gray-500 dark:text-white'>{data.username}</Table.Cell>
-      <Table.Cell className='font-semibold text-gray-500 dark:text-white'>{data.isAdmin?"yes":"no"}</Table.Cell>
+<Table.Cell>
+    {data.isAdmin ?(
+        <FaCheck className='text-green-500' />
+    ):(
+        <FaTimes className='text-red-500'/>
+    )}
+</Table.Cell>
       <Table.Cell>
         <span onClick={()=>{
           setShowModal(true);

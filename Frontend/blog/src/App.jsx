@@ -10,6 +10,7 @@ import Dashboard from './Components/Dashboard/Dashboard'
 import CreatePost from './Components/Post/CreatePost'
 import AdminPrivateRoute from './Components/AdminPrivateRoute'
 import UpdatePost from './Components/Post/UpdatePost'
+import PostPage from './Components/Post/PostPage'
 function App() {
 
   return (
@@ -28,6 +29,7 @@ function App() {
     <Route path='/update-post/:postId' element={<UpdatePost/>}/>
 
   </Route>
+  <Route path='/post/:postSlug' element={<PostPage/>} />
   </Routes>
   <FooterComponent />
  </Router>

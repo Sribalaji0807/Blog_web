@@ -75,7 +75,11 @@ setShowModal(false);
       <Table.Body key={index} className='divide-y'>
       <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
         <Table.Cell>{new Date(data.updatedAt).toLocaleDateString()}</Table.Cell>
-      <Table.Cell><img src={data.postimage} className='w-23 h-10 object-cover'/></Table.Cell>
+      <Table.Cell>
+        <Link to={`/post/${data.slug}`}>
+        <img src={data.postimage} className='w-23 h-10 object-cover'/>
+        </Link>
+        </Table.Cell>
       <Table.Cell className='font-semibold text-gray-500 dark:text-white'>{data.title}</Table.Cell>
       <Table.Cell>{data.category}</Table.Cell>
       <Table.Cell>

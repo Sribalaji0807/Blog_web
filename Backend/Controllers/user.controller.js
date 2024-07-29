@@ -3,7 +3,7 @@ const router=express.Router();
 const User=require('../Models/user.model')
 
 router.delete('/delete/:userid',async(req,res,next)=>{
-    if(req.user.id!=req.params.userid){
+    if(!req.user.isAdmin){
         return res.status(401).json({message:"Unauthorized"})
     }
     try{
