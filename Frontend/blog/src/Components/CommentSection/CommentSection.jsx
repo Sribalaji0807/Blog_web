@@ -52,6 +52,11 @@ try {
     console.log(error.message)
 }
   }
+  const handleEdit=async(commentId,editComment)=>{
+setComments(
+    comments.map(comment=>comment._id===commentId?{...comment,content:editComment}:comment)
+)
+  }
   const handleLike=async(commentId)=>{
      try {
         console.log("start")
@@ -128,7 +133,7 @@ try {
 <div>
 
 {comments.map((data)=>(
-    <ShowComment key={data._id} comment={data} onLike={handleLike}/>
+    <ShowComment key={data._id} comment={data} onLike={handleLike} onEdit={handleEdit}/>
 ))}
 </div>
 </>

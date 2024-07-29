@@ -50,5 +50,26 @@ router.put('/likeComment/:commentId',verifytoken,async(req,res)=>{
    }
 
 })
+router.put('/editcomment/:commentId',verifytoken,async(req,res)=>{
+    try {
+        const commentId=req.params.commentId
+        const {content}=req.body;
+        console.log("start");
+        const comment=await Comment.findById(commentId)
+        if(!comment){
+            return res.status(404).json({message:"page not found"})
+        }
+        if(comment.userId!=req.user.id && !req.user.isAdmin){
+            return res.status(403).json({message:"Forbidden access"})
+        }
+        const editcomment=await Comment.findByIdAndUpdate(commentId,{
+            content:content,
+        },{new:true});
+        console.log("end")
+        return res.status(200).json(editcomment);
+    } catch (error) {
+        
+    }
+})
 
 module.exports=router;
