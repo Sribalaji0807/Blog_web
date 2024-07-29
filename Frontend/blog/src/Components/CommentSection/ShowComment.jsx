@@ -3,7 +3,7 @@ import moment from 'moment'
 import {FaThumbsUp} from 'react-icons/fa'
 import { Textarea,Button} from 'flowbite-react';
 import { useSelector } from 'react-redux';
-export default function ShowComment({comment,onLike,onEdit}) {
+export default function ShowComment({comment,onLike,onEdit,onDelete}) {
     const{currentUser}=useSelector((state)=>state.user)
     const [isEditing,setIsEditing]=useState(false);
     const [editcontent,setEditContent]=useState(comment.content)
@@ -101,11 +101,18 @@ onClick={()=>{setIsEditing(false)}}
              </button>
              <p className='text-gray-400'>{comment.numberOfLikes>0 && comment.numberOfLikes+" "+(comment.numberOfLikes===1?"like":"likes")}</p>
              {currentUser && (currentUser._id===comment.userId || currentUser.isAdmin)&&(
+              <>
                  <button 
                  onClick={()=>{handleEdit()}}
                  className='text-gray-400 hover:text-red-500'>
                      Edit
                  </button>
+                 <button 
+                 onClick={()=>{onDelete(comment._id)}}
+                 className='text-gray-400 hover:text-red-500'>
+                     Delete
+                 </button>
+              </>
              )}
             </div></>
         )}

@@ -71,5 +71,20 @@ router.put('/editcomment/:commentId',verifytoken,async(req,res)=>{
         
     }
 })
-
+router.delete('/deletecomment/:commentId',verifytoken,async(req,res)=>{
+    try {
+        const commentId=req.params.commentId;
+        const comment=await Comment.findById(commentId);
+        if(!comment){
+            return res.status(404).json({message:"page not found"})
+        }
+        if(comment.userId!=req.user.id && !req.user.isAdmin){
+            return res.status(403).json({message:"Forbidden access"})
+        }
+        await Comment.findByIdAndDelete(commentId);
+        return res.status(200).json({message:"Comment deleted"})
+    } catch (error) {
+        
+    }
+})
 module.exports=router;
