@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { useState,useRef } from "react"
 import { Link, useNavigate } from 'react-router-dom'
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
-import { updateStart,updateSuccess,updateFailure,deleteusersuccess } from "../../Redux/userSlice"
+import { updateStart,updateSuccess,updateFailure,deleteusersuccess,signOutSuccess } from "../../Redux/userSlice"
 import { TextInput,Button,Spinner,Alert,Modal } from "flowbite-react"
 const Profile = () => {
     const navigate=useNavigate();
@@ -23,7 +23,13 @@ const Profile = () => {
         setFormdata({...formdata,[e.target.id]:e.target.value})
     }
     const signOut=async()=>{
-
+const response=await fetch('http://localhost:5000/user/signout',{method:'POST',credentials:"include"})
+if(response.ok){
+    const data=await(response.json())
+    console.log(data)
+dispatch(signOutSuccess())
+navigate('/')
+}
     }
     const handleImage=(e)=>{
         
@@ -116,7 +122,9 @@ credentials:"include"
     )}
     <div className="text-red-500 flex justify-between">
         <span  className="cursor-pointer" onClick={()=>setShowModal(true)} >Delete Account</span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span className="cursor-pointer" onClick={()=>{
+            console.log("start")
+            signOut()}}>Sign Out</span>
     </div>
 </div>
     {error && (

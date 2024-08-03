@@ -1,16 +1,27 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import { Navbar,TextInput,Button ,Dropdown,Avatar} from 'flowbite-react'
 import {AiOutlineSearch} from 'react-icons/ai'
+import { signOutSuccess } from '../../Redux/userSlice'
 import {FaMoon,FaSun} from 'react-icons/fa'
 import { useSelector ,useDispatch} from 'react-redux'
 import { toggleTheme } from '../../Redux/themeSlice'
 const Header = () => {
+  const navigate=useNavigate();
     const dispatch=useDispatch();
     const path=useLocation().pathname;
     const {theme}=useSelector(state=>state.theme);
     const {currentUser}=useSelector(state=>state.user)
+    const signOut=async()=>{
+      const response=await fetch('http://localhost:5000/user/signout',{method:'POST',credentials:"include"})
+      if(response.ok){
+          const data=await(response.json())
+          console.log(data)
+      dispatch(signOutSuccess())
+      navigate('/')
+      }
+          }
   return (
     
     <Navbar className='border-b-2 '>
@@ -54,7 +65,7 @@ label={
     <Dropdown.Item>Profile</Dropdown.Item>
     </Link>
     <Dropdown.Divider />
-    <Dropdown.Item>Sign out</Dropdown.Item>
+    <Dropdown.Item onClick={signOut}> Sign out</Dropdown.Item>
 
 
 </Dropdown>

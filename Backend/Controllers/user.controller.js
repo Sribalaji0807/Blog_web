@@ -71,5 +71,12 @@ router.get('/commentuser/:userId',async(req,res)=>{
         return res.status(500).json({message:error.message})
     }
 })
+router.post('/signout',async(req,res)=>{
+    try {
+        res.clearCookie('accesstoken').status(200).json({message:"user signout successfully"})
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
+})
 module.exports=router;
 
