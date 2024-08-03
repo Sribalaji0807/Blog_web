@@ -20,6 +20,18 @@ router.post('/create',verifytoken,async(req,res)=>{
     res.status(500).json({message:"error internal server"})
    }
 })
+router.get('/getallcomments/:userId',verifytoken,async(req,res)=>{
+    if(req.params.userId != req.user.id){
+        return res.status(403).json({message:"unauthorized access"})
+    }
+    const startindex=parseInt(req.query.startindex)||0;
+    const limit=parseInt(req.query.limit)||10;
+    const comments=await Comment.find().skip(startindex).limit(limit);
+    const totalcomments=await Comment.countDocuments();
+    res.status(200).json({comments,
+        totalcomments
+})
+})
 router.get('/getcomments/:postId',async(req,res)=>{
     const postId= req.params.postId;
     const comments=await Comment.find({postId:postId})

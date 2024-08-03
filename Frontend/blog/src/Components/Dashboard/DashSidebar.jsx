@@ -1,5 +1,5 @@
 import { Sidebar } from "flowbite-react"
-import {HiUser,HiArrowSmRight, HiDocument, HiDocumentText, HiOutlineUser} from 'react-icons/hi'
+import {HiUser,HiArrowSmRight, HiDocument,HiAnnotation, HiDocumentText, HiOutlineUser} from 'react-icons/hi'
 import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -36,7 +36,11 @@ Posts
 Users
                 </Sidebar.Item>
                 </Link>
-                               
+                     <Link to='/dashboard?tab=comments'>
+                     <Sidebar.Item active={tab=='comments'} icon={HiAnnotation} as={"div"}>
+                        Comments
+                     </Sidebar.Item>
+                     </Link>          
 </>
                 )}
                 <Sidebar.Item active icon={HiArrowSmRight} className="cursor-pointer" >
