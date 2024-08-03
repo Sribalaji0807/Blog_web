@@ -38,7 +38,7 @@ return res.status(403).json({message:"forbidden access"})
             return rest
         })
 
-        const totalusers=await User.countDocuments();
+        const totalUsers=await User.countDocuments();
         const now=new Date();
         const oneMonthAgo=new Date(
             now.getFullYear(),
@@ -46,14 +46,14 @@ return res.status(403).json({message:"forbidden access"})
             now.getDate()
         )
         console.log("hi")
-        const lastMonthusers= await User.countDocuments({
+        const lastMonthUsers= await User.countDocuments({
             updatedAt:{$gte:oneMonthAgo}
         })
         
             return res.status(200).json({
                     users:userwithoutpass,
-                    totalusers,
-                    lastMonthusers
+                    totalUsers,
+                    lastMonthUsers
                 })
     }
     catch(error){

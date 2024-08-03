@@ -5,6 +5,7 @@ import DashSidebar from "./DashSidebar";
 import DashPosts  from "./DashPosts";
 import Dashusers from './Dashusers'
 import DashComments from "./DashComments";
+import DashComp from "./DashComp";
 const Dashboard = () => {
     const location=useLocation();
     const [tab,setTab]=useState('');
@@ -20,6 +21,7 @@ const Dashboard = () => {
     <DashSidebar />
 </div>
     <div className="w-full">
+        {tab === 'overview' && <DashComp />}
         {tab === 'profile' && <Profile/>}
         {tab==='posts' && <DashPosts/>}
         {tab==='users' && <Dashusers/>}

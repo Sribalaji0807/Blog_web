@@ -27,9 +27,19 @@ router.get('/getallcomments/:userId',verifytoken,async(req,res)=>{
     const startindex=parseInt(req.query.startindex)||0;
     const limit=parseInt(req.query.limit)||10;
     const comments=await Comment.find().skip(startindex).limit(limit);
-    const totalcomments=await Comment.countDocuments();
+    const totalComments=await Comment.countDocuments();
+    const now=new Date();
+    const oneMonthAgo=new Date(
+        now.getFullYear(),
+        now.getMonth()-1,
+        now.getDate()
+    )
+    const lastMonthComments=await Comment.countDocuments({
+        updatedAt:{$gte:oneMonthAgo}
+    })
     res.status(200).json({comments,
-        totalcomments
+        totalComments,
+        lastMonthComments
 })
 })
 router.get('/getcomments/:postId',async(req,res)=>{
