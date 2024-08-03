@@ -3,12 +3,14 @@ import { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 import CallToAction from './CallToAction';
+import PostCard from './PostCard';
 import { Spinner,Button } from 'flowbite-react';
 import CommentSection from '../CommentSection/CommentSection';
 export default function PostPage() {
     const{postSlug}=useParams();
     const [post,setPost]=useState({});
     const [loading,setLoading]=useState(false);
+    const [recentpost,setRecentpost]=useState(null);
 useEffect(()=>{
     setLoading(true);
     const fetchdata=async()=>{
@@ -25,6 +27,17 @@ setLoading(false);
     }
     fetchdata();
 },[postSlug])
+useEffect(()=>{
+    const fetchdata=async()=>{
+        const response=await fetch(`http://localhost:5000/posts/gettheposts?limit=3`,{credentials:"include"});
+        const data=await response.json();
+        if(response.ok){
+          console.log(data.posts)
+          setRecentpost(data.posts);
+        }
+    }
+    fetchdata()
+},[])
 
 if(loading)return(
   <div className='min-h-screen flex justify-center items-center'>
@@ -49,6 +62,14 @@ if(loading)return(
         <CallToAction />
     </div>
     <CommentSection postId={post._id}/>
+    <div className='flex flex-col justify-center items-center'>
+        <h1 className='text-center text-3xl mt-10 p-3 font-serif max-w-2xl mx-auto lg:text-4xl'>Recent Posts</h1>
+        <div className='flex flex-wrap gap-4 sm:justify-center' >
+          {recentpost && recentpost.map((data,index)=>(
+            <PostCard key={index} post={data} />
+          ))}
+        </div>
+    </div>
     </main>
   )
 }
