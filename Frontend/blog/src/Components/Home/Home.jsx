@@ -31,9 +31,9 @@ const Home = () => {
         {posts && posts.length>0 && (
           <div>
             <h2 className='text-center py-2 text-2xl font-semibold'>Recent Posts</h2>
-            <div className='flex flex-wrap gap-4'>
+            <div className='flex flex-wrap gap-4 sm:justify-center'>
               {posts.map((data)=>(
-                <PostCard key={posts._id} post={data} />
+                <PostCard key1={posts._id} post={data} />
               ))}
             </div>
           </div>

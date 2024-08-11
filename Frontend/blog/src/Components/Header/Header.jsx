@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import { Navbar,TextInput,Button ,Dropdown,Avatar} from 'flowbite-react'
@@ -13,6 +13,7 @@ const Header = () => {
     const path=useLocation().pathname;
     const {theme}=useSelector(state=>state.theme);
     const {currentUser}=useSelector(state=>state.user)
+    const [searchTerm,setSearchTerm]=useState('');
     const signOut=async()=>{
       const response=await fetch('http://localhost:5000/user/signout',{method:'POST',credentials:"include"})
       if(response.ok){
@@ -22,6 +23,21 @@ const Header = () => {
       navigate('/')
       }
           }
+          useEffect(() => {
+            const urlParams = new URLSearchParams(location.search);
+            const searchTermFromUrl = urlParams.get('searchTerm');
+            if (searchTermFromUrl) {
+              setSearchTerm(searchTermFromUrl);
+            }
+          }, [location.search]);
+          const handleSubmit = (e) => {
+            e.preventDefault();
+            const urlParams = new URLSearchParams(location.search);
+            urlParams.set('searchTerm', searchTerm);
+            const searchQuery = urlParams.toString();
+            navigate(`/search?${searchQuery}`);
+          };
+
   return (
     
     <Navbar className='border-b-2 '>
@@ -29,18 +45,18 @@ const Header = () => {
         <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white ">Curious J</span>
         blog
         </Link>
-        <form >
+        <form  onSubmit={handleSubmit}>
         <TextInput
         type='text'
         placeholder='Search...'
         rightIcon={AiOutlineSearch}
-        className='hidden lg:inline'
+        value={searchTerm}
+        onChange={(event)=>setSearchTerm(event.target.value)}
+        className='inline'
         />
         </form>
-        <Button className='w-12 h-10 lg:hidden' color='gray' pill> 
-            <AiOutlineSearch />
-        </Button>
-        <div className='flex gap-2 md:order-2'>
+     
+        <div className='flex gap-4 md:order-2'>
         <Button
           className='w-12 h-10  sm:inline'
           color='gray'
@@ -80,6 +96,9 @@ label={
         <Navbar.Collapse>
             <Navbar.Link active={path === '/'} as={"div"}>
                 <Link to='/'>Home</Link>
+            </Navbar.Link>
+            <Navbar.Link active={path==='/about'} as={"div"}>
+              <Link to='/about'>About</Link>
             </Navbar.Link>
         </Navbar.Collapse>
     </Navbar>

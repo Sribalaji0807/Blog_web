@@ -12,6 +12,8 @@ import AdminPrivateRoute from './Components/AdminPrivateRoute'
 import UpdatePost from './Components/Post/UpdatePost'
 import PostPage from './Components/Post/PostPage'
 import ScrollToTop from './Components/ScrollToTop'
+import SearchComp from './Components/Home/SearchComp'
+import About from './Components/About'
 function App() {
 
   return (
@@ -21,8 +23,11 @@ function App() {
  <Header/>
   <Routes>
   <Route path='/' element={<Home/>} />
+  <Route path='/about' element={<About/>
+  }/>
   <Route path='/signin' element={<Signin />} />
   <Route path='/login' element={<Login/>} />
+  <Route path='/search' element={<SearchComp/>} />
   <Route element={<PrivateRoute/>}>
 <Route path='/dashboard' element={<Dashboard/>}/>
   </Route>
