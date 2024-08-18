@@ -3,6 +3,8 @@ const app=express();
 const cookieparser=require('cookie-parser')
 const dotenv=require('dotenv')
 dotenv.config()
+const path=require('path')
+const __dirname = path.resolve();
 const User=require('./Models/user.model')
 const cors=require('cors');
 const multer =require('multer')
@@ -67,6 +69,11 @@ catch(error){
     res.status(404).json({message:error.message})
 }
 })
+app.use(express.static(path.join(__dirname, '/Frontend/blog/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Frontend', 'blog','dist', 'index.html'));
+});
 
 app.listen(port,()=>{
     console.log(`server running at port ${port}`);
