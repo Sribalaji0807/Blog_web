@@ -17,8 +17,7 @@ const upload=multer({storage:storage});
 
         if(file!=null){
         const fileBuffer = file.buffer;
-    console.log(fileBuffer);
-    console.log(req.body);
+  
     const fileName = req.body.fileName;
 
 const fileupload= await new Promise((resolve,reject)=>{
@@ -41,8 +40,7 @@ console.log(url)
 const {title,category,postimage,content}=req.body;
 if(category==undefined){
     category=undefined
-}
-console.log(title,content,req.user.id)    
+}    
 const slug=req.body.title.split(" ").join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g,"-");
         const post=new Post({
          userId:req.user.id,
@@ -120,15 +118,15 @@ router.delete('/deletethepost',async(req,res)=>{
       return res.status(500).json({'message':error.message})
     }
 })
-const conditionmulter=(req,res,next)=>{
-    console.log(req.body);
-    if(req.body.imageupload== true){
-        console.log('imageupload start')
-        upload.single('postimage')(req,res,next);
-    }else{
-        next();
-    }
-}
+// const conditionmulter=(req,res,next)=>{
+//     console.log(req.body);
+//     if(req.body.imageupload== true){
+//         console.log('imageupload start')
+//         upload.single('postimage')(req,res,next);
+//     }else{
+//         next();
+//     }
+// }
 router.put('/updatepost',upload.single('postimage'),async(req,res)=>{
     try{
      let url=undefined;
