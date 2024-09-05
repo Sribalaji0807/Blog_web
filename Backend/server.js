@@ -64,9 +64,9 @@ catch(error){
 })
 app.use(express.static(path.join(dir, '/Frontend/blog/dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(dir, 'Frontend', 'blog','dist', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(dir, 'Frontend', 'blog','dist', 'index.html'));
+// });
 
 app.listen(port,()=>{
     console.log(`server running at port ${port}`);
