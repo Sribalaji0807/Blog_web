@@ -23,7 +23,7 @@ const Profile = () => {
         setFormdata({...formdata,[e.target.id]:e.target.value})
     }
     const signOut=async()=>{
-const response=await fetch('http://localhost:5000/user/signout',{method:'POST',credentials:"include"})
+const response=await fetch('/user/signout',{method:'POST',credentials:"include"})
 if(response.ok){
     const data=await(response.json())
     console.log(data)
@@ -42,7 +42,7 @@ navigate('/')
     const deleteuser=async(req,res)=>{
         setShowModal(false)
         try{
-            const response=await fetch(`http://localhost:5000/user/delete/${currentUser._id}`,{
+            const response=await fetch(`/user/delete/${currentUser._id}`,{
                 method:'DELETE',
 credentials:"include"
             })
@@ -71,7 +71,7 @@ credentials:"include"
           }
         try{
             dispatch(updateStart())
-            const response= await fetch('http://localhost:5000/upload',{
+            const response= await fetch('/upload',{
                 method:'POST',
                 
                 body:formData

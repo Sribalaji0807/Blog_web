@@ -15,7 +15,7 @@ const Header = () => {
     const {currentUser}=useSelector(state=>state.user)
     const [searchTerm,setSearchTerm]=useState('');
     const signOut=async()=>{
-      const response=await fetch('http://localhost:5000/user/signout',{method:'POST',credentials:"include"})
+      const response=await fetch('/user/signout',{method:'POST',credentials:"include"})
       if(response.ok){
           const data=await(response.json())
           console.log(data)

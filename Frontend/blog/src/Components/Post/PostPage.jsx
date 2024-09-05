@@ -14,7 +14,7 @@ export default function PostPage() {
 useEffect(()=>{
     setLoading(true);
     const fetchdata=async()=>{
-        const response=await fetch(`http://localhost:5000/posts/gettheposts?slug=${postSlug}`,{credentials:"include"});
+        const response=await fetch(`/posts/gettheposts?slug=${postSlug}`,{credentials:"include"});
         const data=await response.json();
         if(response.ok){
             console.log(data.posts)
@@ -29,7 +29,7 @@ setLoading(false);
 },[postSlug])
 useEffect(()=>{
     const fetchdata=async()=>{
-        const response=await fetch(`http://localhost:5000/posts/gettheposts?limit=3`,{credentials:"include"});
+        const response=await fetch(`/posts/gettheposts?limit=3`,{credentials:"include"});
         const data=await response.json();
         if(response.ok){
           console.log(data.posts)

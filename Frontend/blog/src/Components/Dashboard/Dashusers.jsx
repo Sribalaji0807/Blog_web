@@ -13,7 +13,7 @@ const Dashusers = () => {
   const [userId, setUserId] = useState(null);
   useEffect(()=>{
     const fetchdata=async()=>{
-      const res=await fetch('http://localhost:5000/user/getusers',{credentials:"include"})
+      const res=await fetch('/user/getusers',{credentials:"include"})
       if(res.ok){
     const data=await res.json()
     console.log(data.users)
@@ -28,7 +28,7 @@ fetchdata();}
   const handleDeleteuser=async()=>{
 setShowModal(false);
     try{
-      const res=await fetch(`http://localhost:5000/user/delete/${userId}`,{method:'DELETE',credentials:"include"})
+      const res=await fetch(`/user/delete/${userId}`,{method:'DELETE',credentials:"include"})
     const data=await res.json()
       if(res.ok){
        setUsers((prev)=>prev.filter((user)=>user._id != userId));
@@ -45,7 +45,7 @@ setShowModal(false);
     const startIndex = userPost.length;
     try {
       const res = await fetch(
-        `http:localhost:5000/posts/gettheposts?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/posts/gettheposts?userId=${currentUser._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {

@@ -16,7 +16,7 @@ const [imageChange,setImageChange]=useState(false);
     useEffect(()=>{
         const getpost=async()=>{
             console.log(postId);
-            const response=await fetch(`http://localhost:5000/posts/gettheposts?postId=${postId}`,{method:'GET',credentials:'include'})
+            const response=await fetch(`/posts/gettheposts?postId=${postId}`,{method:'GET',credentials:'include'})
             const data=await response.json();
             if(!response.ok){
                 console.log("error");
@@ -66,7 +66,7 @@ const [imageChange,setImageChange]=useState(false);
             console.log(`${key}:`, value);
           }
         try{
-            const response= await fetch('http://localhost:5000/posts/updatepost',{
+            const response= await fetch('/posts/updatepost',{
                 method:'PUT',
                 
                 credentials:'include',

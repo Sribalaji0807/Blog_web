@@ -16,7 +16,7 @@ const [commenttodelete,setCommenttodelete]=useState(null);
 const [commenterror,setCommenterror]=useState(null)
   useEffect(()=>{
       const fetchdata=async()=>{
-        const response=await fetch(`http://localhost:5000/comment/getcomments/${postId}`)
+        const response=await fetch(`/comment/getcomments/${postId}`)
         const data=await response.json()
         if(response.ok){
             setComments(data)
@@ -31,7 +31,7 @@ try {
     if(comment.length>200){
         return
     }
-    const response=await fetch('http://localhost:5000/comment/create',{
+    const response=await fetch('/comment/create',{
         method:'POST',
         headers:{
             'Content-Type':'application/json'
@@ -61,7 +61,7 @@ try {
         navigate('/signin')
         return;
     }
-    const resposnse=await fetch(`http://localhost:5000/comment/deletecomment/${commenttodelete}`,{
+    const resposnse=await fetch(`/comment/deletecomment/${commenttodelete}`,{
         method:'DELETE',
         credentials:"include"
     })
@@ -85,7 +85,7 @@ setComments(
             navigate('/signin');
             return
         }
-        const response=await fetch(`http://localhost:5000/comment/likeComment/${commentId}`,{method:'PUT',credentials:"include"})
+        const response=await fetch(`/comment/likeComment/${commentId}`,{method:'PUT',credentials:"include"})
         if(response.ok){
             const data=await response.json();
             console.log(data);

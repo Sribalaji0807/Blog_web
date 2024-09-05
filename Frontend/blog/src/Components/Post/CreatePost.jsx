@@ -36,7 +36,7 @@ const navigate=useNavigate();
             console.log(`${key}:`, value);
           }
         try{
-            const response= await fetch('http://localhost:5000/posts/createapost',{
+            const response= await fetch('/posts/createapost',{
                 method:'POST',
                 
                 credentials:'include',

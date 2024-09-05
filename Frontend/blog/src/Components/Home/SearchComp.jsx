@@ -30,7 +30,7 @@ useEffect(()=>{
     const fetchPosts=async()=>{
         setLoading(true)
         const searchQuery=urlParams.toString();
-        const response=await fetch(`http://localhost:5000/posts/gettheposts?${searchQuery}`,{credentials:"include"})
+        const response=await fetch(`/posts/gettheposts?${searchQuery}`,{credentials:"include"})
         const data=await response.json()
         console.log(data)
         if(response.ok){
@@ -56,7 +56,7 @@ const handleShowMore = async () => {
     const searchQuery=urlParams.toString();
     try {
       const res = await fetch(
-        `http:localhost:5000/posts/gettheposts?${searchQuery}`,{credentials:"include"});
+        `/posts/gettheposts?${searchQuery}`,{credentials:"include"});
       const data = await res.json();
       if (res.ok) {
         setPosts((prev) => [...prev, ...data.posts]);

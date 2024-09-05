@@ -18,7 +18,7 @@ export default function DashComp() {
 useEffect(()=>{
     const fetchPost=async()=>{
         try {
-            const res=await fetch('http://localhost:5000/posts/gettheposts?limit=5',{credentials:"include"})
+            const res=await fetch('/posts/gettheposts?limit=5',{credentials:"include"})
             if(res.ok){
           const data=await res.json()
           console.log(data.posts)
@@ -36,7 +36,7 @@ useEffect(()=>{
     
     
     const fetchUsers=async()=>{
-        const res=await fetch('http://localhost:5000/user/getusers?limit=5',{credentials:"include"})
+        const res=await fetch('/user/getusers?limit=5',{credentials:"include"})
         if(res.ok){
       const data=await res.json()
       console.log(data.users)
@@ -50,7 +50,7 @@ setTotalUsers(data.totalUsers);}
     };
     const fetchComments=async()=>{
         try {
-            const res=await fetch(`http://localhost:5000/comment/getallcomments/${currentUser._id}?limit=5`,{credentials:"include"})
+            const res=await fetch(`/comment/getallcomments/${currentUser._id}?limit=5`,{credentials:"include"})
             if(res.ok){
           const data=await res.json()
      //     console.log(data.users)

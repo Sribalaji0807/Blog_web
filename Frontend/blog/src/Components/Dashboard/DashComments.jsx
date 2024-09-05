@@ -12,7 +12,7 @@ export default function DashComments() {
     const [showModal, setShowModal] = useState(false);
     useEffect(()=>{
         const fetchdata=async()=>{
-            const res=await fetch(`http://localhost:5000/comment/getallcomments/${currentUser._id}`,{credentials:"include"})
+            const res=await fetch(`/comment/getallcomments/${currentUser._id}`,{credentials:"include"})
             if(res.ok){
                 const data=await res.json()
                 setComments(data.comments)
@@ -23,7 +23,7 @@ export default function DashComments() {
     const handleDeletecomment=async()=>{
         setShowModal(false);
             try{
-              const res=await fetch(`http://localhost:5000/comment/deletecomment/${commentId}`,{method:'DELETE',credentials:"include"})
+              const res=await fetch(`/comment/deletecomment/${commentId}`,{method:'DELETE',credentials:"include"})
             const data=await res.json()
               if(res.ok){
                setComments((prev)=>prev.filter((comment)=>comment._id != commentId));

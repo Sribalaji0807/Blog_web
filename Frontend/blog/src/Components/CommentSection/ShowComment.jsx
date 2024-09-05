@@ -11,7 +11,7 @@ export default function ShowComment({comment,onLike,onEdit,onDelete}) {
  useEffect(()=>{
      const getuser=async()=>{
         try {
-const response=await fetch(`http://localhost:5000/user/commentuser/${comment.userId}`,{credentials:"include"})
+const response=await fetch(`/user/commentuser/${comment.userId}`,{credentials:"include"})
 const data=await response.json();
 console.log(data);
 if(response.ok){
@@ -27,7 +27,7 @@ getuser()
  const handlesubmit=async()=>{
     try {
         console.log(comment._id)
-        const response=await fetch(`http://localhost:5000/comment/editcomment/${comment._id}`,{
+        const response=await fetch(`/comment/editcomment/${comment._id}`,{
             method:'PUT',
             headers:{
                 'Content-Type':'application/json'

@@ -12,7 +12,7 @@ const DashPosts = () => {
   const [postId, setPostId] = useState(null);
   useEffect(()=>{
     const fetchdata=async()=>{
-      const res=await fetch(`http://localhost:5000/posts/gettheposts?userId=${currentUser._id}`,{credentials:"include"})
+      const res=await fetch(`/posts/gettheposts?userId=${currentUser._id}`,{credentials:"include"})
       if(res.ok){
     const data=await res.json()
     console.log(data.posts)
@@ -26,7 +26,7 @@ fetchdata();
   const handleDeletepost=async()=>{
 setShowModal(false);
     try{
-      const res=await fetch(`http://localhost:5000/posts/deletethepost?postId=${postId}&userId=${currentUser._id}`,{method:'DELETE',credentials:"include"})
+      const res=await fetch(`/posts/deletethepost?postId=${postId}&userId=${currentUser._id}`,{method:'DELETE',credentials:"include"})
     const data=await res.json()
       if(res.ok){
        setUserPost((prev)=>prev.filter((post)=>post._id != postId));
@@ -43,7 +43,7 @@ setShowModal(false);
     const startIndex = userPost.length;
     try {
       const res = await fetch(
-        `http:localhost:5000/posts/gettheposts?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/posts/gettheposts?userId=${currentUser._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
