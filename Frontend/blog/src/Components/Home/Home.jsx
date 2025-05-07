@@ -6,7 +6,7 @@ const Home = () => {
   const [posts,setPosts]=useState([]);
   useEffect(()=>{
     const fetchdata=async()=>{
-      const response=await fetch(`/posts/gettheposts?limit=9`,{credentials:"include"});
+      const response=await fetch(`/posts/gettheposts?limit=9`);
       const data=await response.json();
       if(response.ok){
         setPosts(data.posts);

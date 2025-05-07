@@ -1,12 +1,13 @@
 const express=require('express');
 const Post=require('../Models/post.model')
 const imagekit=require('../Models/Imagekit')
-const multer =require('multer')
+const multer =require('multer');
+const verifytoken = require('../verifytoken');
 const router=express.Router();
 const storage=multer.memoryStorage();
 const upload=multer({storage:storage});
 
-    router.post('/createapost',upload.single('postimage'),async(req,res,next)=>{
+    router.post('/createapost',verifytoken,upload.single('postimage'),async(req,res,next)=>{
         if(!req.user.isAdmin){
             return res.status(401).json({message:"Unauthorized"})
     }
@@ -105,7 +106,7 @@ console.log(error.messages)
 return res.status(500).json({message:error.messages})
     }
 })
-router.delete('/deletethepost',async(req,res)=>{
+router.delete('/deletethepost',verifytoken,async(req,res)=>{
     try{
       //  console.log(req.query.userId,req.user._id);
     if(req.query.userId != req.user.id || !req.user.isAdmin){
@@ -127,7 +128,7 @@ router.delete('/deletethepost',async(req,res)=>{
 //         next();
 //     }
 // }
-router.put('/updatepost',upload.single('postimage'),async(req,res)=>{
+router.put('/updatepost',verifytoken,upload.single('postimage'),async(req,res)=>{
     try{
      let url=undefined;
      console.log('start',req.file);
