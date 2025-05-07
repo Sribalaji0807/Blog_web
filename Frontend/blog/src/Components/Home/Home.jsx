@@ -19,8 +19,10 @@ const Home = () => {
       <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto'>
         <h1 className='text-3xl font-bold lg:text-6xl'>Welcome to my Blog</h1>
         <p
-        className='text-gray-500 text-xs sm:text-sm'
-        >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus error corrupti eaque sit numquam tempore aliquam iusto quas odio? Vitae magni fuga delectus, corrupti cupiditate voluptas ea exercitationem aliquid similique iure ipsa. Assumenda expedita molestias neque perferendis, sint, adipisci quisquam odio itaque alias harum earum omnis aut cupiditate sit sapiente.</p>
+        className='text-gray-500 text-xs sm:text-sm'>
+  Welcome to Curious J
+    Dive into a space where ideas, insights, and inspiration converge. Our mission is to share thought-provoking content that resonates with curious minds and encourages meaningful conversations.  
+            </p>
       {/* <Link className='text-xs sm:text-sm text-teal-500 hover:underline font-bold'>
       View all posts</Link> */}
       </div>

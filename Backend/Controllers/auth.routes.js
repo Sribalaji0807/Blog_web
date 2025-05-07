@@ -45,7 +45,7 @@ router.post('/login',async(req,res)=>{
     const {password:pass,...rest}=user._doc;
     console.log(rest);
     return res.status(200).cookie('accesstoken',token,{
-        httpOnly:true
+        httpOnly:true,
     }).json(rest)
 })
 module.exports=router;
