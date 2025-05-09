@@ -46,8 +46,9 @@ try {
         withCredentials: true  // For sending cookies with cross-origin requests
     });
     const data=await response.data;
+    console.log(data);
     if(response.status===200){
-        setComment(' ');
+        setComment('');
         setComments([data,...comments])
         console.log(data);
     }
