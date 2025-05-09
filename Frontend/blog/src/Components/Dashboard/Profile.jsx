@@ -28,7 +28,7 @@ const Profile = () => {
     const signOut=async()=>{
 const response=await axios.post ('/user/signout',{withCredentials:true})
 if(response.status===200){
-    const data=await(response.json())
+    const data=await(response.data)
     console.log(data)
 dispatch(signOutSuccess())
 navigate('/')
