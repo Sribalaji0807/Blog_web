@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from '../../axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
@@ -36,14 +37,12 @@ const navigate=useNavigate();
             console.log(`${key}:`, value);
           }
         try{
-            const response= await fetch('/posts/createapost',{
-                method:'POST',
-                
-                credentials:'include',
-                body:formData,
+            const response= await axios.post('/posts/createapost',formData,{
+              
+                withCredentials:true,
             })
-            const data=await response.json();
-            if (response.ok) {
+            const data=await response.data;
+            if (response.status==="200") {
                 
              navigate('/');
               } 

@@ -1,12 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {Link} from 'react-router-dom'
+import axios from '../../axios'
 import { Navbar,TextInput,Button ,Dropdown,Avatar} from 'flowbite-react'
 import {AiOutlineSearch} from 'react-icons/ai'
 import { signOutSuccess } from '../../Redux/userSlice'
 import {FaMoon,FaSun} from 'react-icons/fa'
 import { useSelector ,useDispatch} from 'react-redux'
 import { toggleTheme } from '../../Redux/themeSlice'
+import {useAxios} from '../../useAxios'
 const Header = () => {
   const navigate=useNavigate();
     const dispatch=useDispatch();
@@ -14,10 +16,11 @@ const Header = () => {
     const {theme}=useSelector(state=>state.theme);
     const {currentUser}=useSelector(state=>state.user)
     const [searchTerm,setSearchTerm]=useState('');
+    const {unauthorized}=useAxios();
     const signOut=async()=>{
-      const response=await fetch('/user/signout',{method:'POST',credentials:"include"})
-      if(response.ok){
-          const data=await(response.json())
+      const response=await axios.post('/user/signout',{withCredentials:true});
+      if(response.status===200){
+          const data=await response.data;
           console.log(data)
       dispatch(signOutSuccess())
       navigate('/')

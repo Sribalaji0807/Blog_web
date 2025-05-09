@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from '../../axios';
 import { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom';
@@ -14,9 +15,9 @@ export default function PostPage() {
 useEffect(()=>{
     setLoading(true);
     const fetchdata=async()=>{
-        const response=await fetch(`/posts/gettheposts?slug=${postSlug}`,{credentials:"include"});
-        const data=await response.json();
-        if(response.ok){
+        const response=await axios.get(`/posts/gettheposts?slug=${postSlug}`);
+        const data=await response.data;
+        if(response.status===200){
             console.log(data.posts)
 setPost(data.posts[0])
 setLoading(false);
@@ -29,9 +30,9 @@ setLoading(false);
 },[postSlug])
 useEffect(()=>{
     const fetchdata=async()=>{
-        const response=await fetch(`/posts/gettheposts?limit=3`,{credentials:"include"});
-        const data=await response.json();
-        if(response.ok){
+        const response=await axios.get(`/posts/gettheposts?limit=3`);
+        const data=await response.data;
+        if(response.status===200){
           console.log(data.posts)
           setRecentpost(data.posts);
         }

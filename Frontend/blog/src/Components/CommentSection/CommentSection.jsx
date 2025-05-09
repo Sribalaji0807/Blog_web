@@ -1,4 +1,6 @@
 import React from 'react'
+import axios from '../../axios'
+import { useAxios } from '../../useAxios'
 import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -14,13 +16,15 @@ export default function CommentSection({postId}) {
 const [commenttodelete,setCommenttodelete]=useState(null);
   const {currentUser}=useSelector(state =>state.user)
 const [commenterror,setCommenterror]=useState(null)
+useAxios();
   useEffect(()=>{
       const fetchdata=async()=>{
-        const response=await fetch(`/comment/getcomments/${postId}`)
-        const data=await response.json()
-        if(response.ok){
+        const response=await axios.get(`/comment/getcomments/${postId}`)
+        console.log(response);
+        const data=await response.data;
+        console.log(data);
+        if(response.status===200){
             setComments(data)
-            console.log(data);
         }
       }
       fetchdata()
@@ -31,17 +35,18 @@ try {
     if(comment.length>200){
         return
     }
-    const response=await fetch('/comment/create',{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json'
+    const response = await axios.post('/comment/create', {
+        postId,
+        userId: currentUser._id,
+        content: comment
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
         },
-        credentials:"include",
-        body:JSON.stringify({postId,userId:currentUser._id,content:comment})
-        
-    })
-    const data=await response.json()
-    if(response.ok){
+        withCredentials: true  // For sending cookies with cross-origin requests
+    });
+    const data=await response.data;
+    if(response.status===200){
         setComment(' ');
         setComments([data,...comments])
         console.log(data);
@@ -61,11 +66,11 @@ try {
         navigate('/signin')
         return;
     }
-    const resposnse=await fetch(`/comment/deletecomment/${commenttodelete}`,{
-        method:'DELETE',
-        credentials:"include"
-    })
-    if(resposnse.ok){
+    const response = await axios.delete(`/comment/deletecomment/${commenttodelete}`, {
+        withCredentials: true  // Ensures cookies are included in the request
+    });
+    
+    if(response.status===200){
         setShowModal(false);
         setComments(comments.filter(comment=>comment._id!=commenttodelete))
     }
@@ -85,9 +90,9 @@ setComments(
             navigate('/signin');
             return
         }
-        const response=await fetch(`/comment/likeComment/${commentId}`,{method:'PUT',credentials:"include"})
+        const response=await axios.put(`/comment/likeComment/${commentId}`,{withCredentials:true})
         if(response.ok){
-            const data=await response.json();
+            const data=await response.data;
             console.log(data);
             setComments(comments.map(comment=>comment._id===commentId?{
                 ...comment,

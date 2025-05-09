@@ -3,7 +3,7 @@ import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Label,TextInput,Button,Alert,Spinner} from 'flowbite-react'
 import { Link } from 'react-router-dom'
-
+import axios from '../../axios'
 
 const Signin = () => {
   const navigate=useNavigate();
@@ -19,14 +19,14 @@ const handlesubmit=async(e)=>{
  try{
   setLoading(true);
   setError(null);
-    const response= await fetch('/auth/signup',{
-      method:'POST',
+    const response= await axios.post('/auth/signup',formdata,{
+      
       headers:{
         'Content-Type':'application/json'
       },
-      body:JSON.stringify(formdata)
+    
     })
-    const data= await response.json();
+    const data= await response.data;
     console.log(data);
     if(!data.ok){
       setError(data.message);

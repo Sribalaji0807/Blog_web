@@ -1,5 +1,7 @@
 import React, { useEffect,useState} from 'react'
 import moment from 'moment'
+import { useAxios } from '../../useAxios';
+import axios from '../../axios'
 import {FaThumbsUp} from 'react-icons/fa'
 import { Textarea,Button} from 'flowbite-react';
 import { useSelector } from 'react-redux';
@@ -8,13 +10,14 @@ export default function ShowComment({comment,onLike,onEdit,onDelete}) {
     const [isEditing,setIsEditing]=useState(false);
     const [editcontent,setEditContent]=useState(comment.content)
     const [user,setUser]=useState({});
+    useAxios();
  useEffect(()=>{
      const getuser=async()=>{
         try {
-const response=await fetch(`/user/commentuser/${comment.userId}`,{credentials:"include"})
-const data=await response.json();
+const response=await axios.get(`/user/commentuser/${comment.userId}`);
+const data=await response.data;
 console.log(data);
-if(response.ok){
+if(response.status===200){
     setUser(data);
 }
 } catch (error) {
@@ -27,16 +30,16 @@ getuser()
  const handlesubmit=async()=>{
     try {
         console.log(comment._id)
-        const response=await fetch(`/comment/editcomment/${comment._id}`,{
-            method:'PUT',
+        const response=await axios.put(`/comment/editcomment/${comment._id}`,editcontent,{
+           
             headers:{
                 'Content-Type':'application/json'
             },
-            credentials:"include",
-            body:JSON.stringify({content:editcontent})
+         
+           withCredentials:true
             
         })
-        if(response.ok){
+        if(response.status===200){
             setIsEditing(false);
             onEdit(comment._id,editcontent)
         }

@@ -3,6 +3,8 @@ import { HiOutlineUserGroup,HiArrowNarrowUp,HiAnnotation,HiDocumentText } from '
 import { useSelector } from 'react-redux'
 import { Button,Table } from 'flowbite-react';
 import { Link } from 'react-router-dom'
+import axios from '../../axios'
+import { useAxios } from '../../useAxios';
 export default function DashComp() {
     const {currentUser}=useSelector((state)=>state.user);
     const [users,setUsers]=useState([])
@@ -14,13 +16,14 @@ export default function DashComp() {
     const [lastMonthUsers,setLastMonthUsers]=useState(0);
     const [lastMonthPosts,setLastMonthPosts]=useState(0);
     const [lastMonthComments,setLastMonthComments]=useState(0);
+    useAxios();
 
 useEffect(()=>{
     const fetchPost=async()=>{
         try {
-            const res=await fetch('/posts/gettheposts?limit=5',{credentials:"include"})
-            if(res.ok){
-          const data=await res.json()
+            const res=await axios.get('/posts/gettheposts?limit=5')
+            if(res.status===200){
+          const data=await res.data;
           console.log(data.posts)
         //   if(data.posts.length <9){
         //     setShowmore(false)
@@ -36,9 +39,9 @@ useEffect(()=>{
     
     
     const fetchUsers=async()=>{
-        const res=await fetch('/user/getusers?limit=5',{credentials:"include"})
-        if(res.ok){
-      const data=await res.json()
+        const res=await axios.get('/user/getusers?limit=5',{withCredentials:true})
+        if(res.status===200){
+      const data=await res.data;
       console.log(data.users)
       console.log(data.totalUsers)
     //   if(data.users.length <9){
@@ -50,9 +53,9 @@ setTotalUsers(data.totalUsers);}
     };
     const fetchComments=async()=>{
         try {
-            const res=await fetch(`/comment/getallcomments/${currentUser._id}?limit=5`,{credentials:"include"})
-            if(res.ok){
-          const data=await res.json()
+            const res=await axios.get(`/comment/getallcomments/${currentUser._id}?limit=5`,{withCredentials:true})
+            if(res.status===200){
+          const data=await res.data;
      //     console.log(data.users)
        
           setComments(data.comments)

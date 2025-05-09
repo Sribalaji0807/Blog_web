@@ -3,6 +3,7 @@ import { TextInput,Select,Button } from 'flowbite-react'
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import PostCard from '../Post/PostCard'
+import axios from '../../axios'
 const SearchComp = () => {
     const [sidebarData,setSidebarData]=useState({
         searchTerm:'',
@@ -30,10 +31,10 @@ useEffect(()=>{
     const fetchPosts=async()=>{
         setLoading(true)
         const searchQuery=urlParams.toString();
-        const response=await fetch(`/posts/gettheposts?${searchQuery}`,{credentials:"include"})
-        const data=await response.json()
+        const response=await axios.get(`/posts/gettheposts?${searchQuery}`);
+        const data=await response.data
         console.log(data)
-        if(response.ok){
+        if(response.status===200){
         setPosts(data.posts)
         setLoading(false)
         if(data.posts.length ===9){
@@ -56,9 +57,9 @@ const handleShowMore = async () => {
     const searchQuery=urlParams.toString();
     try {
       const res = await fetch(
-        `/posts/gettheposts?${searchQuery}`,{credentials:"include"});
-      const data = await res.json();
-      if (res.ok) {
+        `/posts/gettheposts?${searchQuery}`);
+      const data = await res.data;
+      if (res.status===200) {
         setPosts((prev) => [...prev, ...data.posts]);
         if (data.posts.length < 9) {
           setShowMore(false);

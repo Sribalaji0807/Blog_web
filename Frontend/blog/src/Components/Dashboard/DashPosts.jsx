@@ -1,20 +1,23 @@
 import React,{useState,useEffect} from 'react'
 import { Table } from 'flowbite-react'
 import { useSelector } from 'react-redux';
+import axios from '../../axios'
 import { Link } from 'react-router-dom';
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 import { Modal,Button } from 'flowbite-react';
+import { useAxios } from '../../useAxios';
 const DashPosts = () => {
   const {currentUser}=useSelector((state)=>state.user)
   const [showmore,setShowmore]=useState(true)
   const [userPost,setUserPost]=useState([]);
   const [showModal, setShowModal] = useState(false);
   const [postId, setPostId] = useState(null);
+  useAxios();
   useEffect(()=>{
     const fetchdata=async()=>{
-      const res=await fetch(`/posts/gettheposts?userId=${currentUser._id}`,{credentials:"include"})
-      if(res.ok){
-    const data=await res.json()
+      const res=await axios.get(`/posts/gettheposts?userId=${currentUser._id}`)
+      if(res.status===200){
+    const data=await res.data;
     console.log(data.posts)
     if(data.posts.length <9){
       setShowmore(false)
@@ -26,9 +29,9 @@ fetchdata();
   const handleDeletepost=async()=>{
 setShowModal(false);
     try{
-      const res=await fetch(`/posts/deletethepost?postId=${postId}&userId=${currentUser._id}`,{method:'DELETE',credentials:"include"})
-    const data=await res.json()
-      if(res.ok){
+      const res=await axios.delete(`/posts/deletethepost?postId=${postId}&userId=${currentUser._id}`,{withCredentials:true})
+    const data=await res.data;
+      if(res.status===200){
        setUserPost((prev)=>prev.filter((post)=>post._id != postId));
       }
       else{
@@ -42,11 +45,11 @@ setShowModal(false);
   const handleShowMore = async () => {
     const startIndex = userPost.length;
     try {
-      const res = await fetch(
+      const res = await axios.get(
         `/posts/gettheposts?userId=${currentUser._id}&startIndex=${startIndex}`
       );
-      const data = await res.json();
-      if (res.ok) {
+      const data = await res.data;
+      if (res.status === 200) {
         setUserPost((prev) => [...prev, ...data.posts]);
         if (data.posts.length < 9) {
           setShowmore(false);

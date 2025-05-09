@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactQuill from 'react-quill';
+import axios from '../../axios';
 import 'react-quill/dist/quill.snow.css';
 import { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -16,9 +17,9 @@ const [imageChange,setImageChange]=useState(false);
     useEffect(()=>{
         const getpost=async()=>{
             console.log(postId);
-            const response=await fetch(`/posts/gettheposts?postId=${postId}`,{method:'GET',credentials:'include'})
-            const data=await response.json();
-            if(!response.ok){
+            const response=await axios.get(`/posts/gettheposts?postId=${postId}`);
+            const data= response.data;
+            if(response.status!="200"){
                 console.log("error");
             }else{
             console.log(data.posts)
@@ -66,14 +67,11 @@ const [imageChange,setImageChange]=useState(false);
             console.log(`${key}:`, value);
           }
         try{
-            const response= await fetch('/posts/updatepost',{
-                method:'PUT',
-                
-                credentials:'include',
-                body:formData,
-            })
-            const data=await response.json();
-            if (response.ok) {
+             const response = await axios.put('/posts/updatepost', formData, {
+            withCredentials: true, // Send cookies with request
+        });
+            const data=await response.data;
+            if (response.status === "200") {
                 console.log(data);
                 setImageChange(false)
              navigate('/');

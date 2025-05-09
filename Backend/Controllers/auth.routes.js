@@ -44,8 +44,16 @@ router.post('/login',async(req,res)=>{
     const token= jwt.sign({id:user._id,isAdmin:user.isAdmin},process.env.JWT_SECRET)
     const {password:pass,...rest}=user._doc;
     console.log(rest);
-    return res.status(200).cookie('accesstoken',token,{
-        httpOnly:true,
-    }).json(rest)
+    console.log(token);
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+     res.cookie('accesstoken',token,{
+      //  httpOnly:true,
+        // sameSite:'lax',
+        // path:'/',
+        // domain:'localhost',
+        maxAge:24*60*60*1000,
+       // secure:false
+    })
+    res.status(200).json(rest);
 })
 module.exports=router;

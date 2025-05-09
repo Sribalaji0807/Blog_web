@@ -19,9 +19,12 @@ const storage=multer.memoryStorage();
 const upload=multer({storage:storage});
 app.use(express.json());
 app.use(cookieparser())
-app.use(cors());
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}));
 app.use('/auth',authRouter)
-app.use('/user',verifytoken,deleteuser);
+app.use('/user',deleteuser);
 app.use('/posts',posthandling)
 app.use('/comment',commenthandler)
 app.post('/upload',upload.single('profilepicture'),async(req,res)=>{

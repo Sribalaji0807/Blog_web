@@ -1,5 +1,6 @@
 import React from 'react'
 import {useState} from 'react'
+import axios from '../../axios';
 import { useNavigate } from 'react-router-dom'
 import { Label,TextInput,Button,Alert,Spinner} from 'flowbite-react'
 import { Link } from 'react-router-dom'
@@ -18,15 +19,15 @@ const handlesubmit=async(e)=>{
   else{
  try{
   dispatch(signInStart())
-    const response= await fetch('/auth/login',{
-      method:'POST',
+    const response= await axios.post('/auth/login',formdata,{
+      
       headers:{
         'Content-Type':'application/json'
       },
-      body:JSON.stringify(formdata),
-      credentials:"include"
+     
+      
     })
-    const data= await response.json();
+    const data= await response.data;
     console.log(data);
     if(data){
         dispatch(signInSuccess(data))

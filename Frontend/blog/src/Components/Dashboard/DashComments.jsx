@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useState,useEffect } from 'react'
+import axios from '../../axios'
+import { useAxios } from '../../useAxios'
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -10,11 +12,12 @@ export default function DashComments() {
     const [comments,setComments]=useState([]);
     const [commentId,setCommentId]=useState(null)
     const [showModal, setShowModal] = useState(false);
+    useAxios();
     useEffect(()=>{
         const fetchdata=async()=>{
-            const res=await fetch(`/comment/getallcomments/${currentUser._id}`,{credentials:"include"})
-            if(res.ok){
-                const data=await res.json()
+            const res=await axios.get(`/comment/getallcomments/${currentUser._id}`,{withCredentials:true})
+            if(res.status===200){
+                const data=await res.data;
                 setComments(data.comments)
             }
         }
@@ -23,9 +26,9 @@ export default function DashComments() {
     const handleDeletecomment=async()=>{
         setShowModal(false);
             try{
-              const res=await fetch(`/comment/deletecomment/${commentId}`,{method:'DELETE',credentials:"include"})
-            const data=await res.json()
-              if(res.ok){
+              const res=await axios.delete(`/comment/deletecomment/${commentId}`,{withCredentials:true})
+            const data=await res.data;
+              if(res.status===200){
                setComments((prev)=>prev.filter((comment)=>comment._id != commentId));
               }
               else{

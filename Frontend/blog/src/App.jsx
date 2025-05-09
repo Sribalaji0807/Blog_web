@@ -19,6 +19,7 @@ function App() {
   return (
     <>
  <Router>
+
   <ScrollToTop/>
  <Header/>
   <Routes>

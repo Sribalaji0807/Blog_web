@@ -1,15 +1,16 @@
 import React,{useEffect,useState} from 'react'
-import {Link} from 'react-router-dom'
+import axios from '../../axios';
 import PostCard from '../Post/PostCard'
 import CallToAction from '../Post/CallToAction'
 const Home = () => {
   const [posts,setPosts]=useState([]);
   useEffect(()=>{
     const fetchdata=async()=>{
-      const response=await fetch(`/posts/gettheposts?limit=9`);
-      const data=await response.json();
-      if(response.ok){
-        setPosts(data.posts);
+    const response=await axios.get(`/posts/gettheposts?limit=9`);
+      console.log(response.data.posts );
+      //const data=data;
+      if(response.status===200 ){
+        setPosts(response.data.posts);
       }
     }
     fetchdata();
@@ -30,12 +31,12 @@ const Home = () => {
         <CallToAction />
       </div>
       <div className='max-w-6xl mx-auto flex flex-col gap-8 py-7'>
-        {posts && posts.length>0 && (
+        {posts && posts.length > 0 && (
           <div>
             <h2 className='text-center py-2 text-2xl font-semibold'>Recent Posts</h2>
             <div className='flex flex-wrap gap-4 sm:justify-center'>
               {posts.map((data)=>(
-                <PostCard key1={posts._id} post={data} />
+                <PostCard key={data._id}  key1={data._id} post={data} />
               ))}
             </div>
           </div>

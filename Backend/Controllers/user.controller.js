@@ -1,8 +1,10 @@
 const express=require('express');
 const router=express.Router();
 const User=require('../Models/user.model')
+const verifytoken = require('../verifytoken');
 
-router.delete('/delete/:userid',async(req,res,next)=>{
+
+router.delete('/delete/:userid',verifytoken,async(req,res,next)=>{
     if(!req.user.isAdmin){
         return res.status(401).json({message:"Unauthorized"})
     }
@@ -14,7 +16,7 @@ router.delete('/delete/:userid',async(req,res,next)=>{
         return res.status(403).json({message:error.message});
     }
 })
-router.get('/getusers',async(req,res)=>{
+router.get('/getusers',verifytoken,async(req,res)=>{
     console.log(req.user.isAdmin);
     try{
         if(req.user.isAdmin===false){

@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 import { updateStart,updateSuccess,updateFailure,deleteusersuccess,signOutSuccess } from "../../Redux/userSlice"
 import { TextInput,Button,Spinner,Alert,Modal } from "flowbite-react"
+import { useAxios } from "../../useAxios"
+import axios from "../../axios"
 const Profile = () => {
     const navigate=useNavigate();
     const dispatch= useDispatch();
@@ -19,12 +21,13 @@ const Profile = () => {
     })
     const [filename,setFilename]=useState(null);
     const imageref=useRef();
+    const {unauthorized}=useAxios();
     const handleform=(e)=>{
         setFormdata({...formdata,[e.target.id]:e.target.value})
     }
     const signOut=async()=>{
-const response=await fetch('/user/signout',{method:'POST',credentials:"include"})
-if(response.ok){
+const response=await axios.post ('/user/signout',{withCredentials:true})
+if(response.status===200){
     const data=await(response.json())
     console.log(data)
 dispatch(signOutSuccess())
@@ -42,12 +45,11 @@ navigate('/')
     const deleteuser=async(req,res)=>{
         setShowModal(false)
         try{
-            const response=await fetch(`/user/delete/${currentUser._id}`,{
-                method:'DELETE',
-credentials:"include"
+            const response=await axios.delete(`/user/delete/${currentUser._id}`,{
+              withCredentials:true
             })
             
-            if(response.ok){
+            if(response.status===200){
                 dispatch(deleteusersuccess())
                 navigate('/')
             }
@@ -71,13 +73,10 @@ credentials:"include"
           }
         try{
             dispatch(updateStart())
-            const response= await fetch('/upload',{
-                method:'POST',
-                
-                body:formData
-            })
+            const response= await axios.post('/upload',formData,{
+                withCredentials:true,            })
             const data=await response.json();
-            if (response.ok) {
+            if (response.status===200) {
                 
                 dispatch(updateSuccess(data))
              navigate('/');
