@@ -15,7 +15,7 @@ router.post('/create',verifytoken,async(req,res)=>{
         userId:userId
     })
     await comment.save();
-    res.status(201).json(comment)
+    res.status(200).json(comment)
    } catch (error) {
     res.status(500).json({message:"error internal server"})
    }
