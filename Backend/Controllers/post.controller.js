@@ -53,7 +53,7 @@ const slug=req.body.title.split(" ").join('-').toLowerCase().replace(/[^a-zA-Z0-
             slug:slug
         })
         await post.save()
-        res.status(201).json({messages:"savedpost"});
+        res.status(200).json({messages:"savedpost"});
     }catch(error){console.log(error.message)
 
         return res.status(500).json({messages:error.message})

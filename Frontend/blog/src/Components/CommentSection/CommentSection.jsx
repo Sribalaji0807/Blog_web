@@ -46,11 +46,11 @@ try {
         withCredentials: true  // For sending cookies with cross-origin requests
     });
     if(response.status===200){
+        console.log(response);
         const data=await response.data;
         console.log(data);
         setComment('');
         setComments((prev)=>[data,...prev]);
-        console.log(data);
     }
     else{
         setCommenterror(data.message)
