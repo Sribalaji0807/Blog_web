@@ -41,7 +41,6 @@ const navigate=useNavigate();
               
                 withCredentials:true,
             })
-            const data=await response.data;
             if (response.status===200) {
                 
              navigate('/');

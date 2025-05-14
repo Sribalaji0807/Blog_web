@@ -18,12 +18,12 @@ const [imageChange,setImageChange]=useState(false);
         const getpost=async()=>{
             console.log(postId);
             const response=await axios.get(`/posts/gettheposts?postId=${postId}`);
-            const data= response.data;
-            if(response.status!="200"){
-                console.log("error");
+            if(response.status===200){
+                const data= response.data;
+                console.log(data.posts)
+                setFormdata(data.posts[0])
             }else{
-            console.log(data.posts)
-            setFormdata(data.posts[0])
+                console.log("error");
         }}
         getpost()
     },[postId])
@@ -71,7 +71,7 @@ const [imageChange,setImageChange]=useState(false);
             withCredentials: true, // Send cookies with request
         });
             const data=await response.data;
-            if (response.status === "200") {
+            if (response.status === 200) {
                 console.log(data);
                 setImageChange(false)
              navigate('/');

@@ -28,8 +28,8 @@ const Profile = () => {
     const signOut=async()=>{
 const response=await axios.post ('/user/signout',{withCredentials:true})
 if(response.status===200){
-    const data=await(response.data)
-    console.log(data)
+    const data=await response.data;
+    console.log(data);
 dispatch(signOutSuccess())
 navigate('/')
 }
@@ -75,9 +75,8 @@ navigate('/')
             dispatch(updateStart())
             const response= await axios.post('/upload',formData,{
                 withCredentials:true,            })
-            const data=await response.json();
             if (response.status===200) {
-                
+const data=await response.data;                
                 dispatch(updateSuccess(data))
              navigate('/');
               } else {
