@@ -26,6 +26,8 @@ A blog website built using the MERN stack (MongoDB, Express.js, React, Node.js).
 - **Authentication:** JWT (JSON Web Token)
 
 ## 🚀 Getting Started
+### Demo
+   [![Watch the video](https://ik.imagekit.io/ej9ydxqpz/Github_demo_video/Screenshot%202025-05-15%20201849.png?updatedAt=1747320555024)](https://ik.imagekit.io/ej9ydxqpz/Github_demo_video/Web%20blog%20demo%20-%20Made%20with%20Clipchamp.mp4?updatedAt=1747320310529)
 
 ### Prerequisites
 

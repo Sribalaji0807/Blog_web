@@ -30,7 +30,7 @@ getuser()
  const handlesubmit=async()=>{
     try {
         console.log(comment._id)
-        const response=await axios.put(`/comment/editcomment/${comment._id}`,editcontent,{
+        const response=await axios.put(`/comment/editcomment/${comment._id}`,{content:editcontent},{
            
             headers:{
                 'Content-Type':'application/json'
